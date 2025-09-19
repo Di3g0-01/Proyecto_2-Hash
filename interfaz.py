@@ -3,7 +3,8 @@ from PyQt5.QtWidgets import (
     QMainWindow, QWidget, QVBoxLayout, QHBoxLayout,
     QLabel, QLineEdit, QPushButton, QFileDialog,
     QMessageBox, QTableWidget, QTableWidgetItem,
-    QHeaderView, QComboBox, QInputDialog, QDesktopWidget
+    QHeaderView, QComboBox, QInputDialog, QDesktopWidget,
+    QPlainTextEdit
 )
 from PyQt5.QtCore import Qt
 
@@ -87,6 +88,12 @@ class GestorArticulosWindow(QMainWindow):
 
         layout.addLayout(acciones_layout)
 
+        # Vista previa del contenido del archivo seleccionado
+        self.vista_previa = QPlainTextEdit()
+        self.vista_previa.setReadOnly(True)
+        self.vista_previa.setPlaceholderText("Vista previa del contenido del archivo seleccionado...")
+        layout.addWidget(self.vista_previa)
+
         self.archivo_seleccionado = None
 
         self.cargar_tabla()
@@ -133,6 +140,12 @@ class GestorArticulosWindow(QMainWindow):
         if archivo:
             self.archivo_seleccionado = archivo
             self.btn_seleccionar_archivo.setText(os.path.basename(archivo))
+            try:
+                with open(archivo, 'r', encoding='utf-8') as f:
+                    contenido = f.read()
+                self.vista_previa.setPlainText(contenido)
+            except Exception as e:
+                self.vista_previa.setPlainText(f"No se pudo cargar el archivo:\n{str(e)}")
 
     def agregar_articulo(self):
         titulo = self.input_titulo.text().strip()
@@ -183,6 +196,7 @@ class GestorArticulosWindow(QMainWindow):
         self.input_anio.clear()
         self.archivo_seleccionado = None
         self.btn_seleccionar_archivo.setText("Seleccionar archivo .txt")
+        self.vista_previa.clear()
 
     def cargar_tabla(self, articulos=None):
         if articulos is None:
