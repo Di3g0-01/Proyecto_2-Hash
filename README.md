@@ -58,7 +58,7 @@ Este proyecto está bajo la licencia MIT. Consulta el archivo LICENSE para más 
 
 ## Autor
 
-Tu Nombre - [Tu GitHub](https://github.com/tu_usuario)
+Diego Ovalle - https://github.com/Di3g0-01
 
 ---
 
